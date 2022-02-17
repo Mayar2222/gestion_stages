@@ -1,7 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../assets/css/custom.css";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const navigator = useNavigate();
+  const onSubmit = (data) => {
+    console.log("Form Input", data);
+    navigator("/admin");
+  };
+
   return (
     <main>
       <div className="container">
@@ -20,7 +34,10 @@ const Login = () => {
                         Enter your username &amp; password to login
                       </p>
                     </div>
-                    <form className="row g-3 needs-validation" noValidate>
+                    <form
+                      className="row g-3 needs-validation"
+                      onSubmit={handleSubmit(onSubmit)}
+                    >
                       <div className="col-12">
                         <label htmlFor="yourUsername" className="form-label">
                           Username
@@ -34,15 +51,22 @@ const Login = () => {
                           </span>
                           <input
                             type="text"
-                            name="username"
+                            name="email"
                             className="form-control"
                             id="yourUsername"
-                            required
+                            {...register("email", {
+                              required: true,
+                              pattern:
+                              /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            })}
                           />
-                          <div className="invalid-feedback">
-                            Please enter your username.
-                          </div>
+                          <br />
                         </div>
+                        {errors.email && (
+                          <div className="text-danger">
+                            Adresse Email non valide.
+                          </div>
+                        )}
                       </div>
                       <div className="col-12">
                         <label htmlFor="yourPassword" className="form-label">
@@ -53,12 +77,14 @@ const Login = () => {
                           name="password"
                           className="form-control"
                           id="yourPassword"
-                          required
+                          {...register("password", { required: true,minLength:8 })}
                         />
-                        <div className="invalid-feedback">
-                          Please enter your password!
-                        </div>
                       </div>
+                      {errors.password && (
+                        <div className="text-danger">
+                          Mot de passe invalide!
+                        </div>
+                      )}
                       <div className="col-12">
                         <div className="form-check">
                           <input

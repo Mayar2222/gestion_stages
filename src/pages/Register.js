@@ -1,7 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
+import { Link,useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 const Register = () => {
+  const {
+    handleSubmit,
+    formState: { errors },
+    register,
+  } = useForm();
+  const navigator = useNavigate() ; 
+  const submitForm = (data) => {
+    console.log("Register Form", data);
+    navigator('/admin') ; 
+  };
   return (
     <main>
       <div className="container">
@@ -14,46 +24,53 @@ const Register = () => {
                   <div className="card-body">
                     <div className="pt-4 pb-2">
                       <h5 className="card-title text-center pb-0 fs-4">
-                        Create an Account
+                        Inscription
                       </h5>
-                      <p className="text-center small">
-                        Enter your personal details to create account
-                      </p>
+                      <p className="text-center small"></p>
                     </div>
-                    <form className="row g-3 needs-validation" noValidate>
+                    <form
+                      className="row g-3 needs-validation"
+                      onSubmit={handleSubmit(submitForm)}
+                    >
                       <div className="col-12">
                         <label htmlFor="yourName" className="form-label">
-                          Your Name
+                          Nom
                         </label>
                         <input
                           type="text"
                           name="name"
                           className="form-control"
                           id="yourName"
-                          required
+                          {...register("name", {
+                            required: true,
+                            pattern: /^[A-Za-z]+$/i,
+                          })}
                         />
-                        <div className="invalid-feedback">
-                          Please, enter your name!
-                        </div>
                       </div>
+                      {errors.name && (
+                        <div className="text-danger">Nom Invalide!</div>
+                      )}
                       <div className="col-12">
                         <label htmlFor="yourEmail" className="form-label">
-                          Your Email
+                          Prénom
                         </label>
                         <input
-                          type="email"
-                          name="email"
+                          type="text"
+                          name="firstName"
                           className="form-control"
                           id="yourEmail"
-                          required
+                          {...register("firstName", {
+                            required: true,
+                            pattern: /^[A-Za-z]+$/i,
+                          })}
                         />
-                        <div className="invalid-feedback">
-                          Please enter a valid Email adddress!
-                        </div>
                       </div>
+                      {errors.firstName && (
+                        <div className="text-danger">Prénom invalide!</div>
+                      )}
                       <div className="col-12">
                         <label htmlFor="yourUsername" className="form-label">
-                          Username
+                          Email
                         </label>
                         <div className="input-group has-validation">
                           <span
@@ -63,57 +80,47 @@ const Register = () => {
                             @
                           </span>
                           <input
-                            type="text"
-                            name="username"
+                            type="email"
+                            name="email"
                             className="form-control"
                             id="yourUsername"
-                            required
+                            {...register("Email", {
+                              required: true,
+                              pattern:
+                                /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            })}
                           />
-                          <div className="invalid-feedback">
-                            Please choose a username.
-                          </div>
+                        
                         </div>
+                        {errors.Email &&   <div className="text-danger">
+                            Adresse Email invalide !
+                          </div>}
                       </div>
                       <div className="col-12">
                         <label htmlFor="yourPassword" className="form-label">
-                          Password
+                          Mot de passe
                         </label>
                         <input
                           type="password"
                           name="password"
                           className="form-control"
                           id="yourPassword"
-                          required
+                          {...register("password", {
+                            required: true,
+                            minLength: 8,
+                          })}
                         />
-                        <div className="invalid-feedback">
-                          Please enter your password!
-                        </div>
+                       
                       </div>
-                      <div className="col-12">
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            name="terms"
-                            type="checkbox"
-                            defaultValue
-                            id="acceptTerms"
-                            required
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="acceptTerms"
-                          >
-                            I agree and accept the{" "}
-                            <a href="#">terms and conditions</a>
-                          </label>
-                          <div className="invalid-feedback">
-                            You must agree before submitting.
-                          </div>
-                        </div>
+                      {
+                        errors.password &&  <div className="text-danger">
+                        mot de passe invalide!
                       </div>
+                      }
+                      <div className="col-12"></div>
                       <div className="col-12">
                         <button className="btn btn-primary w-100" type="submit">
-                          Create Account
+                          S'inscrire
                         </button>
                       </div>
                       <div className="col-12">
