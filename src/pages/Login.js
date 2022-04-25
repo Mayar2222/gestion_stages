@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "../assets/css/custom.css";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUserApi } from "../store/actions/users.actions";
 const Login = () => {
   const {
     register,
@@ -11,9 +13,12 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const navigator = useNavigate();
+  const dispatch = useDispatch()
   const onSubmit = (data) => {
     console.log("Form Input", data);
-    navigator("/admin");
+    dispatch(loginUserApi(data,navigator))
+  
+   // navigator("/admin");
   };
 
   return (
@@ -51,10 +56,10 @@ const Login = () => {
                           </span>
                           <input
                             type="text"
-                            name="email"
+                            name="username"
                             className="form-control"
                             id="yourUsername"
-                            {...register("email", {
+                            {...register("username", {
                               required: true,
                               pattern:
                               /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -77,7 +82,7 @@ const Login = () => {
                           name="password"
                           className="form-control"
                           id="yourPassword"
-                          {...register("password", { required: true,minLength:8 })}
+                          {...register("password", { required: true,minLength:6 })}
                         />
                       </div>
                       {errors.password && (

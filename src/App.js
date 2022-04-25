@@ -12,25 +12,29 @@ import Utilisateurs from "./pages/Admin/Utilisateurs";
 import Formations from "./pages/Admin/Formation";
 import Entrprises from "./pages/Admin/Entrprises";
 import Offres from "./pages/Admin/Offres";
+import { Provider } from "react-redux";
+import store from "./store/store";
 function App() {
   return (
-    <div classname="App">
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="admin" element={<Admin />}>
-            <Route path="" index element={<Utilisateurs />} />
-            <Route path="formations" element={<Formations />} />
-            <Route path="entrprise" element={<Entrprises />} />
-            <Route path="offres" element={<Offres />} />
-          </Route>
-        </Routes>
-        {/* <Footer /> */}
-      </Router>
-    </div>
+    <Provider store={store}>
+      <div classname="App">
+        <Router>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="admin" element={<Admin />}>
+              <Route path="" index element={<Utilisateurs />} />
+              <Route path="formations" element={<Formations />} />
+              <Route path="entrprise" element={<Entrprises />} />
+              <Route path="offres" element={<Offres />} />
+            </Route>
+          </Routes>
+          {/* <Footer /> */}
+        </Router>
+      </div>
+    </Provider>
   );
 }
 

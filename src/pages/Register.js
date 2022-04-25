@@ -1,16 +1,21 @@
 import React from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { registerUserApi } from "../store/actions/users.actions";
 const Register = () => {
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     formState: { errors },
     register,
   } = useForm();
-  const navigator = useNavigate() ; 
+  const navigator = useNavigate();
   const submitForm = (data) => {
     console.log("Register Form", data);
-    navigator('/admin') ; 
+    let body={...data,roles:"role_user"}
+    dispatch(registerUserApi(data))
+    //navigator("/admin");
   };
   return (
     <main>
@@ -41,13 +46,13 @@ const Register = () => {
                           name="name"
                           className="form-control"
                           id="yourName"
-                          {...register("name", {
+                          {...register("nom", {
                             required: true,
                             pattern: /^[A-Za-z]+$/i,
                           })}
                         />
                       </div>
-                      {errors.name && (
+                      {errors.nom && (
                         <div className="text-danger">Nom Invalide!</div>
                       )}
                       <div className="col-12">
@@ -59,13 +64,13 @@ const Register = () => {
                           name="firstName"
                           className="form-control"
                           id="yourEmail"
-                          {...register("firstName", {
+                          {...register("prenom", {
                             required: true,
                             pattern: /^[A-Za-z]+$/i,
                           })}
                         />
                       </div>
-                      {errors.firstName && (
+                      {errors.prenom && (
                         <div className="text-danger">Prénom invalide!</div>
                       )}
                       <div className="col-12">
@@ -84,18 +89,38 @@ const Register = () => {
                             name="email"
                             className="form-control"
                             id="yourUsername"
-                            {...register("Email", {
+                            {...register("email", {
                               required: true,
                               pattern:
                                 /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                             })}
                           />
-                        
                         </div>
-                        {errors.Email &&   <div className="text-danger">
+                        {errors.email && (
+                          <div className="text-danger">
                             Adresse Email invalide !
-                          </div>}
+                          </div>
+                        )}
                       </div>
+                      <div className="col-12">
+                        <label htmlFor="yourName" className="form-label">
+                          Numéro téléphone
+                        </label>
+                        <input
+                          type="text"
+                          name="name"
+                          className="form-control"
+                          id="yourName"
+                          {...register("num_tel", {
+                            required: true,
+                          })}
+                        />
+                      </div>
+                      {errors.num_tel && (
+                        <div className="text-danger">
+                          Num Téléphone Invalide!
+                        </div>
+                      )}
                       <div className="col-12">
                         <label htmlFor="yourPassword" className="form-label">
                           Mot de passe
@@ -110,13 +135,12 @@ const Register = () => {
                             minLength: 8,
                           })}
                         />
-                       
                       </div>
-                      {
-                        errors.password &&  <div className="text-danger">
-                        mot de passe invalide!
-                      </div>
-                      }
+                      {errors.password && (
+                        <div className="text-danger">
+                          mot de passe invalide!
+                        </div>
+                      )}
                       <div className="col-12"></div>
                       <div className="col-12">
                         <button className="btn btn-primary w-100" type="submit">
